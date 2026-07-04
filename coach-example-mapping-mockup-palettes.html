@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup : 3 palettes neutres alternatives</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" />
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Inter", system-ui, sans-serif; }
+  .tabs { display: flex; gap: 0.5rem; justify-content: center; padding: 1.5rem 1rem 0; background: #fff; }
+  .tab-btn { border: 1px solid #ddd; background: #fff; border-radius: 999px; padding: 0.45rem 1rem; font-size: 0.85rem; cursor: pointer; }
+  .tab-btn.active { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
+  .palette { display: none; padding: 2rem 1.5rem 3rem; }
+  .palette.active { display: block; }
+  .inner { max-width: 900px; margin: 0 auto; }
+  h1 { font-family: "Fraunces", serif; font-weight: 600; font-size: 1.3rem; text-align: center; margin: 0 0 1.5rem; }
+  .choices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.3rem; }
+  .choice-card { border-radius: 12px; overflow: hidden; box-shadow: 0 3px 6px rgba(0,0,0,0.14); }
+  .choice-head { height: 58px; display: flex; align-items: center; justify-content: center; }
+  .choice-head svg { width: 27px; height: 27px; }
+  .choice-body { padding: 0.75rem 0.9rem 1rem; }
+  .choice-label { display: block; font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .choice-def { display: block; font-size: 0.82rem; line-height: 1.45; }
+
+  /* Palette A : contemporain clair et froid */
+  #paletteA { background: #f2f3f2; }
+  #paletteA .inner h1 { color: #1c1e1c; }
+  #paletteA .choice-card { background: #ffffff; border: 1px solid #e1e3e1; }
+  #paletteA .choice-def { color: #6b6f6b; }
+  #paletteA .story .choice-head { background: #e3a73a; color: #4a3308; }
+  #paletteA .rule .choice-head { background: #3e6e99; color: #eaf2fb; }
+  #paletteA .example .choice-head { background: #4c8a55; color: #eaf5ec; }
+  #paletteA .question .choice-head { background: #b14a3c; color: #fbeae7; }
+  #paletteA .story .choice-label { color: #6b4a12; }
+  #paletteA .rule .choice-label { color: #1c3550; }
+  #paletteA .example .choice-label { color: #1c3e21; }
+  #paletteA .question .choice-label { color: #5c231a; }
+
+  /* Palette B : ardoise sombre */
+  #paletteB { background: #24272d; }
+  #paletteB .inner h1 { color: #f2f0ea; }
+  #paletteB .choice-card { background: #2e323a; border: 1px solid #40454e; }
+  #paletteB .choice-def { color: #b9bcc2; }
+  #paletteB .story .choice-head { background: #e3a73a; color: #4a3308; }
+  #paletteB .rule .choice-head { background: #4d7eab; color: #eaf2fb; }
+  #paletteB .example .choice-head { background: #5a9c64; color: #eaf5ec; }
+  #paletteB .question .choice-head { background: #c15a4b; color: #fbeae7; }
+  #paletteB .story .choice-label { color: #f0c878; }
+  #paletteB .rule .choice-label { color: #a7cdec; }
+  #paletteB .example .choice-label { color: #b3ddb9; }
+  #paletteB .question .choice-label { color: #f0b3a6; }
+
+  /* Palette C : bleu ardoise froid */
+  #paletteC { background: #eef1f4; }
+  #paletteC .inner h1 { color: #1c2a33; }
+  #paletteC .choice-card { background: #ffffff; border: 1px solid #d7dee3; }
+  #paletteC .choice-def { color: #55636c; }
+  #paletteC .story .choice-head { background: #e3a73a; color: #4a3308; }
+  #paletteC .rule .choice-head { background: #3e6e99; color: #eaf2fb; }
+  #paletteC .example .choice-head { background: #4c8a55; color: #eaf5ec; }
+  #paletteC .question .choice-head { background: #b14a3c; color: #fbeae7; }
+  #paletteC .story .choice-label { color: #6b4a12; }
+  #paletteC .rule .choice-label { color: #17324a; }
+  #paletteC .example .choice-label { color: #163a1c; }
+  #paletteC .question .choice-label { color: #4a1710; }
+</style>
+</head>
+<body>
+<div class="tabs">
+  <button class="tab-btn active" data-tab="paletteA">A. Contemporain clair et froid</button>
+  <button class="tab-btn" data-tab="paletteB">B. Ardoise sombre</button>
+  <button class="tab-btn" data-tab="paletteC">C. Bleu ardoise froid</button>
+</div>
+
+<section class="palette active" id="paletteA">
+  <div class="inner">
+    <h1>A. Contemporain clair et froid</h1>
+    <div class="choices">
+      <div class="choice-card story"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5c3-1.4 6-1.4 8 0v14c-2-1.4-5-1.4-8 0V5z"/><path d="M20 5c-3-1.4-6-1.4-8 0v14c2-1.4 5-1.4 8 0V5z"/></svg></div><div class="choice-body"><span class="choice-label">Récit</span><span class="choice-def">Pose le sujet, sans trancher.</span></div></div>
+      <div class="choice-card rule"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v16M6 7h12M6 7L3.5 12.5a2.6 2.6 0 005 0L6 7zM18 7l-2.5 5.5a2.6 2.6 0 005 0L18 7z"/></svg></div><div class="choice-body"><span class="choice-label">Règle</span><span class="choice-def">Générale, sans valeur concrète.</span></div></div>
+      <div class="choice-card example"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></div><div class="choice-body"><span class="choice-label">Exemple</span><span class="choice-def">Concret et nommé (date, montant).</span></div></div>
+      <div class="choice-card question"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h16v10H9l-4 4V15H4z"/></svg></div><div class="choice-body"><span class="choice-label">Question</span><span class="choice-def">Ce que personne ne sait encore.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="palette" id="paletteB">
+  <div class="inner">
+    <h1>B. Ardoise sombre</h1>
+    <div class="choices">
+      <div class="choice-card story"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5c3-1.4 6-1.4 8 0v14c-2-1.4-5-1.4-8 0V5z"/><path d="M20 5c-3-1.4-6-1.4-8 0v14c2-1.4 5-1.4 8 0V5z"/></svg></div><div class="choice-body"><span class="choice-label">Récit</span><span class="choice-def">Pose le sujet, sans trancher.</span></div></div>
+      <div class="choice-card rule"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v16M6 7h12M6 7L3.5 12.5a2.6 2.6 0 005 0L6 7zM18 7l-2.5 5.5a2.6 2.6 0 005 0L18 7z"/></svg></div><div class="choice-body"><span class="choice-label">Règle</span><span class="choice-def">Générale, sans valeur concrète.</span></div></div>
+      <div class="choice-card example"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></div><div class="choice-body"><span class="choice-label">Exemple</span><span class="choice-def">Concret et nommé (date, montant).</span></div></div>
+      <div class="choice-card question"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h16v10H9l-4 4V15H4z"/></svg></div><div class="choice-body"><span class="choice-label">Question</span><span class="choice-def">Ce que personne ne sait encore.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="palette" id="paletteC">
+  <div class="inner">
+    <h1>C. Bleu ardoise froid</h1>
+    <div class="choices">
+      <div class="choice-card story"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5c3-1.4 6-1.4 8 0v14c-2-1.4-5-1.4-8 0V5z"/><path d="M20 5c-3-1.4-6-1.4-8 0v14c2-1.4 5-1.4 8 0V5z"/></svg></div><div class="choice-body"><span class="choice-label">Récit</span><span class="choice-def">Pose le sujet, sans trancher.</span></div></div>
+      <div class="choice-card rule"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v16M6 7h12M6 7L3.5 12.5a2.6 2.6 0 005 0L6 7zM18 7l-2.5 5.5a2.6 2.6 0 005 0L18 7z"/></svg></div><div class="choice-body"><span class="choice-label">Règle</span><span class="choice-def">Générale, sans valeur concrète.</span></div></div>
+      <div class="choice-card example"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></div><div class="choice-body"><span class="choice-label">Exemple</span><span class="choice-def">Concret et nommé (date, montant).</span></div></div>
+      <div class="choice-card question"><div class="choice-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h16v10H9l-4 4V15H4z"/></svg></div><div class="choice-body"><span class="choice-label">Question</span><span class="choice-def">Ce que personne ne sait encore.</span></div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll(".tab-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+      document.querySelectorAll(".palette").forEach(function (s) { s.classList.remove("active"); });
+      btn.classList.add("active");
+      document.getElementById(btn.getAttribute("data-tab")).classList.add("active");
+    });
+  });
+</script>
+</body>
+</html>

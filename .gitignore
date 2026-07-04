@@ -1,0 +1,27 @@
+# Dépendances
+node_modules
+
+# Builds intermédiaires (dist* est en cache local, pas versionné)
+dist
+dist-*
+!docs
+
+# Logs et caches
+*.log
+.vite
+coverage
+.turbo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Éditeurs
+.idea
+.vscode
+*.swp
+*.swo
+
+# Env
+.env
+.env.local

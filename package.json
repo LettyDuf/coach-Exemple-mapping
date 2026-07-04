@@ -1,0 +1,53 @@
+{
+  "name": "coach-example-mapping",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Outil pédagogique pour apprendre et préparer un atelier Example Mapping.",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && rimraf dist && vite build --outDir dist && cp dist/index.html coach-example-mapping.html && cp dist/index.html docs/index.html",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:domain": "vitest run --project domain",
+    "test:corpus": "vitest run --project corpus",
+    "lint": "eslint . --ext .ts,.tsx",
+    "format": "prettier --write \"src/**/*.{ts,tsx,css,md}\""
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
+    "@vitejs/plugin-react": "^6.0.3",
+    "eslint": "^8.57.0",
+    "eslint-plugin-boundaries": "^4.2.2",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "eslint-plugin-react-refresh": "^0.4.7",
+    "jsdom": "^29.1.1",
+    "prettier": "^3.3.2",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.4.5",
+    "vite": "^8.1.0",
+    "vite-plugin-singlefile": "^2.3.3",
+    "vitest": "^4.1.9",
+    "vitest-axe": "^0.1.0"
+  },
+  "homepage": "https://lettyduf.github.io/Coach_Example_Mapping/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LettyDuf/Coach_Example_Mapping.git"
+  },
+  "license": "CC-BY-SA-4.0",
+  "author": "Lætitia Dufour"
+}

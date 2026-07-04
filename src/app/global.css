@@ -1,0 +1,21 @@
+:root {
+  color-scheme: light;
+}
+
+/*
+ * Fond de page aligne sur la palette du module Classification (D11) :
+ * un seul et meme fond neutre du bord de la fenetre jusqu'au contenu,
+ * pas un panneau encadre pose sur un fond different (defaut signale
+ * par Laetitia le 2026-07-04 sur le build de production).
+ */
+body {
+  margin: 0;
+  background-color: #eef1f4;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.035) 1px, transparent 1px),
+    radial-gradient(rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+  background-size: 3px 3px, 7px 7px;
+  background-position: 0 0, 1.5px 3.5px;
+  color: #1c2a33;
+  min-height: 100vh;
+}

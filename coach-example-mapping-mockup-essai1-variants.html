@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup : variantes autour de l'essai 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" />
+<style>
+  :root {
+    --paper: #f6efe0;
+    --ink: #2b2416;
+    --ink-soft: #6b6252;
+    --card: #fbf6ea;
+    --card-border: #ddd2b8;
+    --story: #e3a73a; --story-tint: #f6e9cb; --story-ink: #5c3f0d;
+    --rule: #3e6e99; --rule-tint: #dde7f0; --rule-ink: #12324a;
+    --example: #4c8a55; --example-tint: #dfeee0; --example-ink: #163a1c;
+    --question: #b14a3c; --question-tint: #f4e1dc; --question-ink: #4a1710;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background-color: var(--paper);
+    background-image: radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1px), radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1.5px 3.5px;
+    color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 2rem 1.5rem 4rem; }
+  h1 { font-family: "Fraunces", serif; font-weight: 600; font-size: 1.4rem; text-align: center; margin: 0 0 0.25rem; }
+  .sub { text-align: center; color: var(--ink-soft); font-size: 0.9rem; margin: 0 0 1.5rem; }
+
+  .tabs { display: flex; gap: 0.5rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+  .tab-btn { border: 1px solid var(--card-border); background: var(--card); border-radius: 999px; padding: 0.45rem 1rem; font-size: 0.85rem; cursor: pointer; color: var(--ink-soft); }
+  .tab-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+
+  .essai { display: none; }
+  .essai.active { display: block; }
+  .essai-title { font-family: "Fraunces", serif; font-size: 1.05rem; margin: 0 0 0.3rem; text-align: center; }
+  .essai-note { font-size: 0.82rem; color: var(--ink-soft); text-align: center; margin: 0 auto 1.5rem; max-width: 560px; }
+
+  .mode-tag { text-align: center; font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 1.25rem; }
+
+  .card-stage { perspective: 1200px; width: 100%; max-width: 640px; height: 190px; margin: 0 auto 1.75rem; }
+  .card-flip { position: relative; width: 100%; height: 100%; cursor: pointer; transform-style: preserve-3d; transition: transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .card-flip.revealed { transform: rotateY(180deg); }
+  .card-face { position: absolute; inset: 0; border-radius: 14px; backface-visibility: hidden; display: flex; align-items: center; justify-content: center; padding: 1.25rem; box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 10px 20px rgba(43,36,22,0.14), 0 2px 5px rgba(43,36,22,0.10); }
+  .card-back { background: repeating-linear-gradient(135deg, #efe6cf 0 10px, #e9dfc2 10px 20px); border: 2px solid #d8cba7; }
+  .card-back .diamond { width: 42px; height: 42px; background: conic-gradient(var(--story) 0 25%, var(--rule) 25% 50%, var(--example) 50% 75%, var(--question) 75% 100%); transform: rotate(45deg); border-radius: 6px; opacity: 0.85; }
+  .card-front { background: var(--card); border: 1px solid var(--card-border); transform: rotateY(180deg); font-size: 1.1rem; line-height: 1.55; text-align: center; max-width: 520px; margin: 0 auto; }
+
+  .choices { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.3rem; max-width: 860px; margin: 0 auto; }
+
+  /* Variante A : bande pleine couleur, icône corrigée (taille fixée), définition complète */
+  .cardA { border-radius: 12px; border: 1px solid var(--card-border); background: var(--card); overflow: hidden; box-shadow: 0 3px 6px rgba(43,36,22,0.14); text-align: left; }
+  .cardA-head { height: 58px; display: flex; align-items: center; justify-content: center; }
+  .cardA-head svg { width: 28px; height: 28px; display: block; }
+  .cardA-body { padding: 0.75rem 0.9rem 1rem; }
+  .cardA-name { font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .cardA-def { font-size: 0.82rem; color: var(--ink-soft); line-height: 1.45; }
+  .story-tone .cardA-head { background: var(--story); color: #fff; } .story-tone .cardA-name { color: var(--story-ink); }
+  .rule-tone .cardA-head { background: var(--rule); color: #fff; } .rule-tone .cardA-name { color: var(--rule-ink); }
+  .example-tone .cardA-head { background: var(--example); color: #fff; } .example-tone .cardA-name { color: var(--example-ink); }
+  .question-tone .cardA-head { background: var(--question); color: #fff; } .question-tone .cardA-name { color: var(--question-ink); }
+
+  /* Variante B : badge icone colore a gauche, pas de bande pleine, accent en bordure gauche */
+  .cardB { border-radius: 10px; border: 1px solid var(--card-border); border-left: 5px solid transparent; background: var(--card); box-shadow: 0 3px 6px rgba(43,36,22,0.12); padding: 0.9rem 1rem; display: flex; gap: 0.7rem; align-items: flex-start; text-align: left; }
+  .cardB-badge { flex: 0 0 auto; width: 36px; height: 36px; border-radius: 9px; display: flex; align-items: center; justify-content: center; }
+  .cardB-badge svg { width: 19px; height: 19px; display: block; }
+  .cardB-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.2rem; }
+  .cardB-def { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.4; }
+  .cardB.story { border-left-color: var(--story); } .cardB.story .cardB-badge { background: var(--story-tint); color: var(--story); } .cardB.story .cardB-name { color: var(--story-ink); }
+  .cardB.rule { border-left-color: var(--rule); } .cardB.rule .cardB-badge { background: var(--rule-tint); color: var(--rule); } .cardB.rule .cardB-name { color: var(--rule-ink); }
+  .cardB.example { border-left-color: var(--example); } .cardB.example .cardB-badge { background: var(--example-tint); color: var(--example); } .cardB.example .cardB-name { color: var(--example-ink); }
+  .cardB.question { border-left-color: var(--question); } .cardB.question .cardB-badge { background: var(--question-tint); color: var(--question); } .cardB.question .cardB-name { color: var(--question-ink); }
+
+  /* Variante C : médaillon flottant sur fond teinté pâle, bordure colorée */
+  .cardC { position: relative; border-radius: 12px; border: 1.5px solid; background: var(--card); box-shadow: 0 3px 6px rgba(43,36,22,0.12); padding: 1.5rem 0.9rem 1rem; text-align: center; }
+  .cardC-medal { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 2px solid var(--card); box-shadow: 0 2px 4px rgba(43,36,22,0.2); }
+  .cardC-medal svg { width: 19px; height: 19px; display: block; }
+  .cardC-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .cardC-def { font-size: 0.8rem; color: var(--ink-soft); line-height: 1.4; }
+  .cardC.story { border-color: var(--story); background: var(--story-tint); } .cardC.story .cardC-medal { background: var(--story); color: #fff; } .cardC.story .cardC-name { color: var(--story-ink); }
+  .cardC.rule { border-color: var(--rule); background: var(--rule-tint); } .cardC.rule .cardC-medal { background: var(--rule); color: #fff; } .cardC.rule .cardC-name { color: var(--rule-ink); }
+  .cardC.example { border-color: var(--example); background: var(--example-tint); } .cardC.example .cardC-medal { background: var(--example); color: #fff; } .cardC.example .cardC-name { color: var(--example-ink); }
+  .cardC.question { border-color: var(--question); background: var(--question-tint); } .cardC.question .cardC-medal { background: var(--question); color: #fff; } .cardC.question .cardC-name { color: var(--question-ink); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Coach Example Mapping</h1>
+  <p class="sub">Variantes autour de l'essai 1 : définition dans la carte</p>
+
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="va">Variante A : bande pleine, icône corrigée</button>
+    <button class="tab-btn" data-tab="vb">Variante B : badge à gauche</button>
+    <button class="tab-btn" data-tab="vc">Variante C : médaillon flottant</button>
+  </div>
+
+  <section class="essai active" id="va">
+    <p class="essai-title">Variante A : même principe que l'essai 1, icône proprement dimensionnée</p>
+    <p class="essai-note">La bande de couleur pleine est conservée, mais l'icône est maintenant contrainte à une taille fixe (elle ne s'étire plus). Définitions complètes, plus de place pour les lire.</p>
+    <div class="mode-tag">Mode : <strong>Avec le mentor</strong></div>
+    <div class="card-stage"><div class="card-flip revealed" data-flip="va">
+      <div class="card-face card-back"><div class="diamond"></div></div>
+      <div class="card-face card-front">Le contrat a été résilié il y a 2 semaines : le portail refuse et redirige vers un agent.</div>
+    </div></div>
+    <div class="choices">
+      <div class="cardA story-tone"><div class="cardA-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5c3-1.4 6-1.4 8 0v14c-2-1.4-5-1.4-8 0V5z"/><path d="M20 5c-3-1.4-6-1.4-8 0v14c2-1.4 5-1.4 8 0V5z"/></svg></div><div class="cardA-body"><div class="cardA-name">Story</div><div class="cardA-def">Pose le sujet de la conversation, sans trancher.</div></div></div>
+      <div class="cardA rule-tone"><div class="cardA-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v15M7 8h10M7 8l-2.4 4.8a2.4 2.4 0 004.8 0L7 8zM17 8l-2.4 4.8a2.4 2.4 0 004.8 0L17 8z"/></svg></div><div class="cardA-body"><div class="cardA-name">Règle</div><div class="cardA-def">Générale et abstraite, sans valeur concrète.</div></div></div>
+      <div class="cardA example-tone"><div class="cardA-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></div><div class="cardA-body"><div class="cardA-name">Exemple</div><div class="cardA-def">Concret et nommé : une date, un montant, un nom.</div></div></div>
+      <div class="cardA question-tone"><div class="cardA-head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v10H9l-4 4V15H4z"/></svg></div><div class="cardA-body"><div class="cardA-name">Question</div><div class="cardA-def">Ce que personne ne sait encore.</div></div></div>
+    </div>
+  </section>
+
+  <section class="essai" id="vb">
+    <p class="essai-title">Variante B : badge icône colorée à gauche, plus de bande pleine</p>
+    <p class="essai-note">Un badge carré colore (icône dans sa couleur, sur fond teinté clair) remplace la bande pleine. Un liseré coloré sur le bord gauche rappelle la catégorie. Le nom et la définition complète sont côte à côte.</p>
+    <div class="mode-tag">Mode : <strong>Avec le mentor</strong></div>
+    <div class="card-stage"><div class="card-flip revealed" data-flip="vb">
+      <div class="card-face card-back"><div class="diamond"></div></div>
+      <div class="card-face card-front">Le contrat a été résilié il y a 2 semaines : le portail refuse et redirige vers un agent.</div>
+    </div></div>
+    <div class="choices">
+      <div class="cardB story"><div class="cardB-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5c3-1.4 6-1.4 8 0v14c-2-1.4-5-1.4-8 0V5z"/><path d="M20 5c-3-1.4-6-1.4-8 0v14c2-1.4 5-1.4 8 0V5z"/></svg></div><div><div class="cardB-name">Story</div><div class="cardB-def">Pose le sujet, sans trancher.</div></div></div>
+      <div class="cardB rule"><div class="cardB-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v15M7 8h10M7 8l-2.4 4.8a2.4 2.4 0 004.8 0L7 8zM17 8l-2.4 4.8a2.4 2.4 0 004.8 0L17 8z"/></svg></div><div><div class="cardB-name">Règle</div><div class="cardB-def">Générale, sans valeur concrète.</div></div></div>
+      <div class="cardB example"><div class="cardB-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></div><div><div class="cardB-name">Exemple</div><div class="cardB-def">Concret et nommé (date, montant, nom).</div></div></div>
+      <div class="cardB question"><div class="cardB-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v10H9l-4 4V15H4z"/></svg></div><div><div class="cardB-name">Question</div><div class="cardB-def">Ce que personne ne sait encore.</div></div></div>
+    </div>
+  </section>
+
+  <section class="essai" id="vc">
+    <p class="essai-title">Variante C : médaillon flottant, fond teinté</p>
+    <p class="essai-note">L'icône devient un médaillon rond qui chevauche le haut de la carte, façon jeton de jeu de société. Le fond de la carte prend une teinte pâle de la catégorie plutôt qu'un aplat saturé.</p>
+    <div class="mode-tag">Mode : <strong>Avec le mentor</strong></div>
+    <div class="card-stage"><div class="card-flip revealed" data-flip="vc">
+      <div class="card-face card-back"><div class="diamond"></div></div>
+      <div class="card-face card-front">Le contrat a été résilié il y a 2 semaines : le portail refuse et redirige vers un agent.</div>
+    </div></div>
+    <div class="choices">
+      <div class="cardC story"><div class="cardC-medal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5c3-1.4 6-1.4 8 0v14c-2-1.4-5-1.4-8 0V5z"/><path d="M20 5c-3-1.4-6-1.4-8 0v14c2-1.4 5-1.4 8 0V5z"/></svg></div><div class="cardC-name">Story</div><div class="cardC-def">Pose le sujet, sans trancher.</div></div>
+      <div class="cardC rule"><div class="cardC-medal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 4v15M7 8h10M7 8l-2.4 4.8a2.4 2.4 0 004.8 0L7 8zM17 8l-2.4 4.8a2.4 2.4 0 004.8 0L17 8z"/></svg></div><div class="cardC-name">Règle</div><div class="cardC-def">Générale, sans valeur concrète.</div></div>
+      <div class="cardC example"><div class="cardC-medal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg></div><div class="cardC-name">Exemple</div><div class="cardC-def">Concret et nommé (date, montant, nom).</div></div>
+      <div class="cardC question"><div class="cardC-medal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v10H9l-4 4V15H4z"/></svg></div><div class="cardC-name">Question</div><div class="cardC-def">Ce que personne ne sait encore.</div></div>
+    </div>
+  </section>
+</div>
+
+<script>
+  document.querySelectorAll(".tab-btn").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      document.querySelectorAll(".tab-btn").forEach(function (b) { b.classList.remove("active"); });
+      document.querySelectorAll(".essai").forEach(function (s) { s.classList.remove("active"); });
+      btn.classList.add("active");
+      document.getElementById(btn.getAttribute("data-tab")).classList.add("active");
+    });
+  });
+  document.querySelectorAll("[data-flip]").forEach(function (el) {
+    el.addEventListener("click", function () { el.classList.toggle("revealed"); });
+  });
+</script>
+</body>
+</html>

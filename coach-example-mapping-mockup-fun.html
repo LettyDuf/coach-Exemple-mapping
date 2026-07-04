@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mockup : piste "fun" du module Classification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap" />
+<style>
+  :root {
+    --paper: #eef1f4;
+    --ink: #1c2a33;
+    --ink-soft: #55636c;
+    --card: #ffffff;
+    --card-border: #d7dee3;
+    --story: #9c7015;
+    --story-ink: #6b4a12;
+    --rule: #3e6e99;
+    --rule-ink: #17324a;
+    --example: #4c8a55;
+    --example-ink: #163a1c;
+    --question: #b14a3c;
+    --question-ink: #4a1710;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--paper);
+    background-image:
+      radial-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
+      radial-gradient(rgba(0,0,0,0.02) 1px, transparent 1px);
+    background-size: 3px 3px, 7px 7px;
+    background-position: 0 0, 1.5px 3.5px;
+    color: var(--ink);
+    font-family: "Inter", system-ui, sans-serif;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1040px; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+  .banner {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    background: rgba(0,0,0,0.05);
+    border-radius: 999px;
+    padding: 0.35rem 1rem;
+    display: inline-block;
+    margin: 0 auto 1.5rem;
+  }
+  .banner-row { text-align: center; }
+  h1 {
+    font-family: "Fraunces", serif;
+    font-weight: 600;
+    font-size: 1.6rem;
+    text-align: center;
+    margin: 0 0 0.25rem;
+  }
+  .sub { text-align: center; color: var(--ink-soft); font-size: 0.95rem; margin: 0 0 2rem; }
+
+  /* --- Ecran de jeu (unique, pas d'ecran de choix de mode prealable) --- */
+  .table-area { display: flex; flex-direction: column; align-items: center; }
+
+  .card-stage {
+    perspective: 1200px;
+    width: 100%;
+    max-width: 640px;
+    height: 210px;
+    margin: 0 auto 1.75rem;
+  }
+  .card-flip {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    transform-style: preserve-3d;
+    transition: transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .card-flip.revealed { transform: rotateY(180deg); }
+  .card-face {
+    position: absolute;
+    inset: 0;
+    border-radius: 14px;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    box-shadow:
+      0 1px 0 rgba(0,0,0,0.08),
+      0 10px 20px rgba(28,42,51,0.14),
+      0 2px 5px rgba(28,42,51,0.10);
+  }
+  .card-back {
+    background:
+      repeating-linear-gradient(45deg, transparent 0 13px, rgba(28,42,51,0.16) 13px 14px, transparent 14px 27px, rgba(28,42,51,0.07) 27px 28px),
+      repeating-linear-gradient(-45deg, transparent 0 13px, rgba(28,42,51,0.16) 13px 14px, transparent 14px 27px, rgba(28,42,51,0.07) 27px 28px),
+      #e6eaee;
+    border: 2px solid #c7d1d8;
+  }
+  .card-back .diamond {
+    width: 46px; height: 46px;
+    background: conic-gradient(var(--story) 0 25%, var(--rule) 25% 50%, var(--example) 50% 75%, var(--question) 75% 100%);
+    transform: rotate(45deg);
+    border-radius: 6px;
+    opacity: 0.85;
+  }
+  .card-front {
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    transform: rotateY(180deg);
+    font-size: 1.15rem;
+    line-height: 1.55;
+    text-align: center;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  .card-hint { text-align: center; color: var(--ink-soft); font-size: 0.85rem; margin: -1.25rem 0 1.75rem; }
+
+  .choices { display: grid; grid-template-columns: repeat(4, 1fr); align-items: stretch; gap: 1.3rem; width: 100%; max-width: 860px; }
+  .choice-card {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    align-self: stretch;
+    border-radius: 12px;
+    border: 1px solid var(--card-border);
+    border-top: none;
+    background: var(--card);
+    overflow: hidden;
+    cursor: pointer;
+    text-align: left;
+    box-shadow: 0 3px 6px rgba(28,42,51,0.14);
+    transition: transform 180ms ease-out, box-shadow 180ms ease-out;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    width: 100%;
+    font: inherit;
+  }
+  .choice-card:hover:not(:disabled), .choice-card:focus-visible {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 20px rgba(28,42,51,0.22);
+    outline: none;
+  }
+  .choice-card:disabled { cursor: default; opacity: 0.55; }
+  .choice-card::-moz-focus-inner { border: 0; padding: 0; }
+  .choice-card { text-align: left; }
+  .choice-head {
+    box-sizing: border-box;
+    height: 58px;
+    min-height: 58px;
+    max-height: 58px;
+    flex-shrink: 0;
+    flex-grow: 0;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-top-left-radius: 11px;
+    border-top-right-radius: 11px;
+  }
+  .choice-head svg { width: 27px; height: 27px; display: block; }
+  .choice-body { display: block; padding: 0.75rem 0.9rem 1rem; }
+  .choice-label { display: block; font-size: 1rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .choice-def { display: block; font-size: 0.82rem; color: var(--ink-soft); line-height: 1.45; font-weight: 400; }
+  .choice-card.story .choice-head { background: var(--story); color: #ffffff; }
+  .choice-card.rule .choice-head { background: var(--rule); color: #ffffff; }
+  .choice-card.example .choice-head { background: var(--example); color: #ffffff; }
+  .choice-card.question .choice-head { background: var(--question); color: #ffffff; }
+  .choice-card.story .choice-label { color: var(--story-ink); }
+  .choice-card.rule .choice-label { color: var(--rule-ink); }
+  .choice-card.example .choice-label { color: var(--example-ink); }
+  .choice-card.question .choice-label { color: var(--question-ink); }
+  .choices.solo .choice-def {
+    opacity: 0.45;
+    transition: opacity 150ms ease-out;
+  }
+  .choices.solo .choice-card:hover:not(:disabled) .choice-def,
+  .choices.solo .choice-card:focus-visible .choice-def {
+    opacity: 1;
+  }
+  .choice-card { position: relative; }
+
+  .choice-card.shake { animation: shake 320ms ease-in-out; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-6px); }
+    40% { transform: translateX(5px); }
+    60% { transform: translateX(-4px); }
+    80% { transform: translateX(3px); }
+  }
+  .choice-card.pulse-correct { animation: pulseCorrect 420ms ease-out; }
+  @keyframes pulseCorrect {
+    0% { transform: scale(1); }
+    45% { transform: scale(1.07) translateY(-8px); }
+    100% { transform: scale(1) translateY(-6px); }
+  }
+
+  .feedback {
+    max-width: 700px;
+    margin: 1.5rem auto 0;
+    padding: 0.9rem 1.1rem;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    line-height: 1.5;
+    position: relative;
+    display: none;
+  }
+  .feedback.show { display: block; }
+  .feedback.ok { background: #e4f0e2; border: 1px solid var(--example); color: var(--example-ink); }
+  .feedback.wrong { background: #f5e3df; border: 1px solid var(--question); color: var(--question-ink); }
+  .feedback::before {
+    content: "";
+    position: absolute;
+    top: -7px; left: var(--tail-left, 28px);
+    width: 12px; height: 12px;
+    background: inherit;
+    border-left: inherit;
+    border-top: inherit;
+    transform: translateX(-50%) rotate(45deg);
+  }
+
+  .card-flip.ready-next .card-front {
+    animation: readyPulse 1100ms ease-in-out infinite;
+  }
+  @keyframes readyPulse {
+    0%, 100% { box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 10px 20px rgba(28,42,51,0.14), 0 2px 5px rgba(28,42,51,0.10); }
+    50% { box-shadow: 0 1px 0 rgba(0,0,0,0.08), 0 10px 20px rgba(28,42,51,0.14), 0 0 0 3px rgba(28,42,51,0.18); }
+  }
+
+  .piles-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.3rem;
+    max-width: 860px;
+    width: 100%;
+    margin: 2.5rem auto 0;
+  }
+  .pile-col { text-align: center; }
+  .pile-stack { position: relative; height: 64px; }
+  .pile-card {
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 44px;
+    height: 30px;
+    border-radius: 4px;
+    box-shadow: 0 2px 3px rgba(28,42,51,0.18);
+  }
+  .mode-tag { text-align: center; margin-bottom: 1.75rem; }
+  #mode-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid var(--card-border);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 0.4rem 1rem 0.4rem 0.7rem;
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(28,42,51,0.10);
+  }
+  #mode-toggle strong { color: var(--ink); }
+  .mode-toggle-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--example); flex: 0 0 auto; }
+  #mode-toggle[aria-pressed="false"] .mode-toggle-dot { background: var(--rule); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="banner-row"><span class="banner">Mockup non fonctionnel, piste visuelle et d'interaction seulement</span></div>
+  <h1>Coach Example Mapping</h1>
+  <p class="sub">Module Classification : piste "jeu de cartes"</p>
+
+  <section id="play-screen">
+    <div class="mode-tag">
+      <button id="mode-toggle" aria-pressed="true">
+        <span class="mode-toggle-dot"></span>
+        Mode : <strong id="mode-label">Avec le mentor</strong>
+      </button>
+    </div>
+
+    <div class="table-area">
+      <div class="card-stage">
+        <div class="card-flip" id="card-flip" tabindex="0" role="button" aria-label="Carte de l'extrait">
+          <div class="card-face card-back"><div class="diamond"></div></div>
+          <div class="card-face card-front" id="card-text"></div>
+        </div>
+      </div>
+      <p class="card-hint" id="card-hint">Cliquer la carte pour la retourner</p>
+
+      <div class="choices" id="choices">
+        <button class="choice-card story" data-color="story">
+          <span class="choice-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5c3-1.4 6-1.4 8 0v14c-2-1.4-5-1.4-8 0V5z"/><path d="M20 5c-3-1.4-6-1.4-8 0v14c2-1.4 5-1.4 8 0V5z"/></svg>
+          </span>
+          <span class="choice-body">
+            <span class="choice-label">Récit</span>
+            <span class="choice-def">Pose le sujet de la conversation, sans trancher.</span>
+          </span>
+        </button>
+        <button class="choice-card rule" data-color="rule">
+          <span class="choice-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3v16M6 7h12M6 7L3.5 12.5a2.6 2.6 0 005 0L6 7zM18 7l-2.5 5.5a2.6 2.6 0 005 0L18 7z"/></svg>
+          </span>
+          <span class="choice-body">
+            <span class="choice-label">Règle</span>
+            <span class="choice-def">Générale et abstraite, sans valeur concrète.</span>
+          </span>
+        </button>
+        <button class="choice-card example" data-color="example">
+          <span class="choice-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10" cy="10" r="6"/><line x1="14.5" y1="14.5" x2="20" y2="20"/></svg>
+          </span>
+          <span class="choice-body">
+            <span class="choice-label">Exemple</span>
+            <span class="choice-def">Concret et nommé : une date, un montant, un nom.</span>
+          </span>
+        </button>
+        <button class="choice-card question" data-color="question">
+          <span class="choice-head">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 5h16v10H9l-4 4V15H4z"/><text x="10.5" y="12.5" font-size="7" fill="currentColor" stroke="none" font-family="Inter">?</text></svg>
+          </span>
+          <span class="choice-body">
+            <span class="choice-label">Question</span>
+            <span class="choice-def">Ce que personne ne sait encore.</span>
+          </span>
+        </button>
+      </div>
+
+      <div class="feedback" id="feedback"></div>
+
+      <div class="piles-row">
+        <div class="pile-col"><div class="pile-stack" id="pile-story"></div></div>
+        <div class="pile-col"><div class="pile-stack" id="pile-rule"></div></div>
+        <div class="pile-col"><div class="pile-stack" id="pile-example"></div></div>
+        <div class="pile-col"><div class="pile-stack" id="pile-question"></div></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  var ITEMS = [
+    { statement: "Je veux déclarer un sinistre dégât d'eau directement dans le portail, pour obtenir un dossier ouvert sans attendre un agent.", expected: "story",
+      rationale: "C'est le sujet de la conversation : on ne sait pas encore quelles contraintes s'appliquent.",
+      wrong: { rule: "Trop général pour être une règle : aucune contrainte précise n'est encore posée.", example: "Il manque une situation concrète (une date, un contrat précis).", question: "Ce n'est pas une inconnue : c'est un souhait posé, pas une question ouverte." } },
+    { statement: "Le contrat doit être actif au moment de la déclaration.", expected: "rule",
+      rationale: "Énoncé général et abstrait, sans valeur concrète : une vraie règle.",
+      wrong: { example: "Aucune donnée concrète n'est citée (pas de date, pas de nom).", story: "C'est une contrainte, pas le sujet de la conversation.", question: "On connaît déjà la réponse ici, ce n'est pas une inconnue." } },
+    { statement: "Le contrat a été résilié il y a 2 semaines : le portail refuse et redirige vers un agent.", expected: "example",
+      rationale: "Concret et nommé : une donnée précise (2 semaines), une situation identifiable.",
+      wrong: { rule: "C'est une illustration d'une règle, pas la règle elle-même.", story: "Trop précis et circonstancié pour être le sujet général.", question: "La réponse est connue et déjà donnée ici." } },
+    { statement: "Quel est le délai maximal entre l'incident et la déclaration pour rester recevable ?", expected: "question",
+      rationale: "Personne ne connaît la réponse dans la salle : exactement ce qu'une carte rouge doit capturer.",
+      wrong: { rule: "Une règle affirme une contrainte connue ; ici, personne ne sait la réponse.", example: "Il n'y a pas de situation concrète décrite, juste une interrogation.", story: "Ce n'est pas le sujet général, c'est un point précis en suspens." } },
+    { statement: "Permettre au client de suivre l'état d'avancement de son dossier après ouverture.", expected: "story",
+      rationale: "C'est une nouvelle story découpée et mise de côté, pas une règle ni un exemple du sujet initial.",
+      wrong: { rule: "Ce n'est pas une contrainte sur la story en cours, c'est un sujet différent.", example: "Aucune situation précise n'est décrite, c'est un nouveau besoin.", question: "Ce n'est pas une inconnue, c'est une proposition de sujet à traiter plus tard." } }
+  ];
+
+  var COLOR_HEX = { story: "#9c7015", rule: "#3e6e99", example: "#4c8a55", question: "#b14a3c" };
+  var LABELS = { story: "Story", rule: "Règle", example: "Exemple", question: "Question" };
+
+  var idx = 0;
+  var locked = false;
+  var readyForNext = false;
+  var mode = "guided";
+  var pileCounts = { story: 0, rule: 0, example: 0, question: 0 };
+
+  var modeToggle = document.getElementById("mode-toggle");
+  var modeLabel = document.getElementById("mode-label");
+  var choicesEl = document.getElementById("choices");
+  var cardFlip = document.getElementById("card-flip");
+  var cardText = document.getElementById("card-text");
+  var cardHint = document.getElementById("card-hint");
+  var feedback = document.getElementById("feedback");
+  var choiceButtons = document.querySelectorAll(".choice-card");
+
+  function applyMode() {
+    modeLabel.textContent = mode === "guided" ? "Avec le mentor" : "En solo";
+    choicesEl.classList.toggle("solo", mode === "solo");
+    modeToggle.setAttribute("aria-pressed", mode === "guided" ? "true" : "false");
+  }
+
+  modeToggle.addEventListener("click", function () {
+    mode = mode === "guided" ? "solo" : "guided";
+    applyMode();
+  });
+
+  function loadItem() {
+    var item = ITEMS[idx % ITEMS.length];
+    cardFlip.classList.remove("revealed", "ready-next");
+    cardText.textContent = item.statement;
+    cardHint.textContent = "Cliquer la carte pour la retourner";
+    cardHint.style.display = "block";
+    feedback.className = "feedback";
+    feedback.textContent = "";
+    locked = false;
+    readyForNext = false;
+    choiceButtons.forEach(function (b) {
+      b.disabled = false;
+      b.classList.remove("shake", "pulse-correct");
+    });
+  }
+
+  function handleCardActivate() {
+    if (readyForNext) {
+      idx += 1;
+      loadItem();
+      return;
+    }
+    if (!cardFlip.classList.contains("revealed")) {
+      cardFlip.classList.add("revealed");
+      cardHint.style.display = "none";
+    }
+  }
+
+  cardFlip.addEventListener("click", handleCardActivate);
+  cardFlip.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleCardActivate();
+    }
+  });
+
+  choiceButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      if (locked) return;
+      if (!cardFlip.classList.contains("revealed")) {
+        cardFlip.classList.add("revealed");
+        cardHint.style.display = "none";
+        return;
+      }
+      locked = true;
+      var chosen = btn.getAttribute("data-color");
+      var item = ITEMS[idx % ITEMS.length];
+      var correct = chosen === item.expected;
+      choiceButtons.forEach(function (b) { b.disabled = true; });
+
+      if (correct) {
+        btn.classList.add("pulse-correct");
+        growPile(chosen);
+        feedback.className = "feedback show ok";
+        feedback.textContent = item.rationale;
+      } else {
+        btn.classList.add("shake");
+        var msg = item.wrong[chosen] || "Ce n'est pas la bonne catégorie ici.";
+        feedback.className = "feedback show wrong";
+        feedback.textContent = msg;
+      }
+      positionTail(btn);
+
+      var seconds = 4;
+      cardHint.style.display = "block";
+      cardHint.textContent = "Lecture du pourquoi... " + seconds + "s";
+      var t = setInterval(function () {
+        seconds -= 1;
+        if (seconds <= 0) {
+          clearInterval(t);
+          readyForNext = true;
+          cardHint.textContent = "Cliquer la carte pour continuer";
+          cardFlip.classList.add("ready-next");
+        } else {
+          cardHint.textContent = "Lecture du pourquoi... " + seconds + "s";
+        }
+      }, 1000);
+    });
+  });
+
+  function positionTail(btn) {
+    var btnRect = btn.getBoundingClientRect();
+    var fbRect = feedback.getBoundingClientRect();
+    var left = (btnRect.left + btnRect.width / 2) - fbRect.left;
+    left = Math.max(20, Math.min(left, fbRect.width - 20));
+    feedback.style.setProperty("--tail-left", left + "px");
+  }
+
+  function growPile(color) {
+    pileCounts[color] += 1;
+    var stack = document.getElementById("pile-" + color);
+    var card = document.createElement("div");
+    card.className = "pile-card";
+    var n = pileCounts[color];
+    var rot = (n % 2 === 0 ? 1 : -1) * (2 + (n % 3));
+    var bottom = Math.min(n * 4, 40);
+    card.style.background = COLOR_HEX[color];
+    card.style.transform = "translateX(-50%) rotate(" + rot + "deg)";
+    card.style.bottom = bottom + "px";
+    card.style.zIndex = n;
+    stack.appendChild(card);
+  }
+
+  applyMode();
+  loadItem();
+</script>
+</body>
+</html>

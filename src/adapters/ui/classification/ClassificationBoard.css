@@ -1,0 +1,564 @@
+/**
+ * Système visuel du module Classification (UX-UI.md).
+ *
+ * Porté depuis le mockup validé (coach-example-mapping-mockup-fun.html,
+ * 2026-07-03/04) après plusieurs tours de correction avec Lætitia :
+ * palette neutre bleu-ardoise froid (DECISIONS.md D11), icône blanche
+ * uniforme sur les 4 bandeaux avec moutarde assombri pour le contraste
+ * (D12), empilement du contenu de carte collé en haut plutôt que
+ * centré par défaut par le bouton natif (D13).
+ *
+ * Différenciation par forme et icône systématique redondante avec la
+ * couleur : jamais couleur seule (accessibilité, daltonisme
+ * rouge/vert).
+ *
+ * Jetons scopés à `.classification-board` (pas `:root`) : un seul
+ * module existe pour l'instant, on ne promeut pas ces valeurs en
+ * jetons globaux avant d'avoir un deuxième module qui en a besoin.
+ */
+
+.classification-board {
+  --paper: #eef1f4;
+  --ink: #1c2a33;
+  --ink-soft: #55636c;
+  --card: #ffffff;
+  --card-border: #d7dee3;
+  --story: #9c7015;
+  --story-ink: #6b4a12;
+  --rule: #3e6e99;
+  --rule-ink: #17324a;
+  --example: #4c8a55;
+  --example-ink: #163a1c;
+  --question: #b14a3c;
+  --question-ink: #4a1710;
+
+  /*
+   * Pas de fond, de bordure ou d'arrondi ici : le fond neutre appartient
+   * a la page (global.css), pas a ce conteneur. Un fond distinct ici
+   * recreait un "panneau encadre" sur une page d'une autre teinte,
+   * defaut signale le 2026-07-04.
+   */
+  box-sizing: border-box;
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+  color: var(--ink);
+  font-family: "Inter", system-ui, sans-serif;
+}
+
+.classification-board *,
+.classification-board *::before,
+.classification-board *::after {
+  box-sizing: border-box;
+}
+
+/* --- Bascule Mentor / Solo --- */
+
+.classification-board__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.classification-board__finish {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+}
+
+.classification-board__finish:hover,
+.classification-board__finish:focus-visible {
+  color: var(--ink);
+}
+
+.classification-board__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid var(--card-border);
+  background: var(--card);
+  border-radius: 999px;
+  padding: 0.4rem 1rem 0.4rem 0.7rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(28, 42, 51, 0.1);
+}
+
+.classification-board__toggle strong {
+  color: var(--ink);
+}
+
+.classification-board__toggle-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--example);
+  flex: 0 0 auto;
+}
+
+.classification-board__toggle[aria-pressed="false"] .classification-board__toggle-dot {
+  background: var(--rule);
+}
+
+/* --- Carte retournable --- */
+
+.classification-board__stage {
+  perspective: 1200px;
+  width: 100%;
+  max-width: 640px;
+  height: 190px;
+  margin: 0 auto 1.25rem;
+}
+
+.classification-board__flip {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  transition: transform 480ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.classification-board__flip--revealed {
+  transform: rotateY(180deg);
+}
+
+.classification-board__flip--static {
+  cursor: default;
+}
+
+/*
+ * Transition de texte entre deux items (D18, 2026-07-04). Deux tentatives
+ * precedentes ecartees : faire tourner tout le conteneur de la carte
+ * laissait deviner le dos et/ou compressait le texte au point de
+ * paraitre coupe. Ici, le conteneur de la carte ne bouge plus une fois
+ * revelee (transform fixe) : seul le texte de l'enonce joue une sortie
+ * puis une entree, par aplatissement horizontal (scaleX), sans rotation
+ * 3D reelle. Ce texte est deja dans un parent avec perspective et
+ * rotateY ; une seconde rotation imbriquee aurait un rendu peu
+ * previsible selon les navigateurs, d'ou ce choix volontairement plus
+ * simple et plus robuste.
+ */
+.classification-board__statement {
+  display: block;
+  transform-origin: center;
+}
+
+.classification-board__statement--exiting {
+  animation: classification-statement-exit 170ms ease-in forwards;
+}
+
+.classification-board__statement--entering {
+  animation: classification-statement-enter 200ms ease-out;
+}
+
+@keyframes classification-statement-exit {
+  0% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(0.05);
+    opacity: 0;
+  }
+}
+
+@keyframes classification-statement-enter {
+  0% {
+    transform: scaleX(0.05);
+    opacity: 0;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+.classification-board__face {
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  backface-visibility: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  text-align: center;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.08),
+    0 10px 20px rgba(28, 42, 51, 0.14),
+    0 2px 5px rgba(28, 42, 51, 0.1);
+}
+
+.classification-board__face--back {
+  background:
+    repeating-linear-gradient(45deg, transparent 0 13px, rgba(28, 42, 51, 0.16) 13px 14px, transparent 14px 27px, rgba(28, 42, 51, 0.07) 27px 28px),
+    repeating-linear-gradient(-45deg, transparent 0 13px, rgba(28, 42, 51, 0.16) 13px 14px, transparent 14px 27px, rgba(28, 42, 51, 0.07) 27px 28px),
+    #e6eaee;
+  border: 2px solid #c7d1d8;
+}
+
+.classification-board__medallion {
+  width: 46px;
+  height: 46px;
+  background: conic-gradient(var(--story) 0 25%, var(--rule) 25% 50%, var(--example) 50% 75%, var(--question) 75% 100%);
+  transform: rotate(45deg);
+  border-radius: 6px;
+  opacity: 0.85;
+}
+
+.classification-board__face--front {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  transform: rotateY(180deg);
+  color: var(--ink);
+}
+
+.classification-board__flip--ready .classification-board__face--front {
+  animation: classification-ready-pulse 1100ms ease-in-out infinite;
+}
+
+@keyframes classification-ready-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.08),
+      0 10px 20px rgba(28, 42, 51, 0.14),
+      0 2px 5px rgba(28, 42, 51, 0.1);
+  }
+  50% {
+    box-shadow:
+      0 1px 0 rgba(0, 0, 0, 0.08),
+      0 10px 20px rgba(28, 42, 51, 0.14),
+      0 0 0 3px rgba(28, 42, 51, 0.18);
+  }
+}
+
+.classification-board__hint {
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+  margin: 0 0 1.5rem;
+}
+
+.classification-board__toolbar,
+.classification-board__hint {
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* --- Cartes de choix --- */
+
+.classification-board__choices {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  align-items: stretch;
+  gap: 1.3rem;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.classification-board__choice {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  align-self: stretch;
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  border-top: none;
+  background: var(--card);
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: 0 3px 6px rgba(28, 42, 51, 0.14);
+  transition:
+    transform 180ms ease-out,
+    box-shadow 180ms ease-out;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  font: inherit;
+  color: inherit;
+}
+
+.classification-board__choice::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+.classification-board__choice:hover:not(:disabled),
+.classification-board__choice:focus-visible {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 20px rgba(28, 42, 51, 0.22);
+  outline: none;
+}
+
+.classification-board__choice:disabled {
+  cursor: default;
+}
+
+.classification-board__choice-head {
+  box-sizing: border-box;
+  height: 52px;
+  min-height: 52px;
+  max-height: 52px;
+  flex-shrink: 0;
+  flex-grow: 0;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-top-left-radius: 11px;
+  border-top-right-radius: 11px;
+  color: #ffffff;
+}
+
+.classification-board__choice-head svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+.classification-board__choice-body {
+  display: block;
+  padding: 0.65rem 0.8rem 0.85rem;
+}
+
+.classification-board__choice-label {
+  display: block;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.classification-board__choice-def {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  line-height: 1.4;
+  font-weight: 400;
+}
+
+.classification-board__choice--story .classification-board__choice-head {
+  background: var(--story);
+}
+.classification-board__choice--rule .classification-board__choice-head {
+  background: var(--rule);
+}
+.classification-board__choice--example .classification-board__choice-head {
+  background: var(--example);
+}
+.classification-board__choice--question .classification-board__choice-head {
+  background: var(--question);
+}
+
+.classification-board__choice--story .classification-board__choice-label {
+  color: var(--story-ink);
+}
+.classification-board__choice--rule .classification-board__choice-label {
+  color: var(--rule-ink);
+}
+.classification-board__choice--example .classification-board__choice-label {
+  color: var(--example-ink);
+}
+.classification-board__choice--question .classification-board__choice-label {
+  color: var(--question-ink);
+}
+
+/* Mode Solo : la définition reste dans le DOM (toujours restituée à un
+   lecteur d'écran) mais visuellement atténuée ; net au survol/focus. */
+.classification-board__choices--solo .classification-board__choice-def {
+  opacity: 0.45;
+  transition: opacity 150ms ease-out;
+}
+.classification-board__choices--solo .classification-board__choice:hover:not(:disabled) .classification-board__choice-def,
+.classification-board__choices--solo .classification-board__choice:focus-visible .classification-board__choice-def {
+  opacity: 1;
+}
+
+.classification-board__choice--shake {
+  animation: classification-shake 320ms ease-in-out;
+}
+@keyframes classification-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(5px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+.classification-board__choice--pulse {
+  animation: classification-pulse-correct 420ms ease-out;
+}
+@keyframes classification-pulse-correct {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.05) translateY(-6px);
+  }
+  100% {
+    transform: scale(1) translateY(-4px);
+  }
+}
+
+/*
+ * Mise en evidence de la bonne reponse apres une erreur : jamais la
+ * couleur seule (bordure + repere textuel "(bonne reponse)", visible
+ * a l'ecran et restitue a un lecteur d'ecran), demande explicite de
+ * Laetitia le 2026-07-04 (aucune explication ni bonne reponse
+ * affichee jusque-la en cas d'erreur).
+ */
+.classification-board__choice--correct-reveal {
+  /* box-shadow plutot que border : la bordure superieure du bouton a ete
+     retiree deliberement (D13/D16, seam corrigee), ne pas la reintroduire. */
+  box-shadow:
+    0 0 0 2px var(--example),
+    0 0 0 5px rgba(76, 138, 85, 0.25);
+}
+
+.classification-board__choice-correct-tag {
+  display: inline;
+  font-weight: 400;
+  font-size: 0.78rem;
+  color: var(--example-ink);
+}
+
+/* --- Passer un item --- */
+
+.classification-board__skip-row {
+  display: flex;
+  justify-content: center;
+  max-width: 860px;
+  margin: 1rem auto 0;
+}
+
+.classification-board__skip {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: none;
+  color: var(--ink-soft);
+  font-size: 0.82rem;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0.3rem 0.5rem;
+}
+
+.classification-board__skip:hover,
+.classification-board__skip:focus-visible {
+  color: var(--ink);
+}
+
+/* --- Bulle de feedback --- */
+
+.classification-board__feedback {
+  position: relative;
+  max-width: 860px;
+  margin: 1.25rem auto 0;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.classification-board__feedback--ok {
+  background: #e4f0e2;
+  border: 1px solid var(--example);
+  color: var(--example-ink);
+}
+
+.classification-board__feedback--wrong {
+  background: #f5e3df;
+  border: 1px solid var(--question);
+  color: var(--question-ink);
+}
+
+.classification-board__feedback::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: var(--tail-left, 28px);
+  width: 12px;
+  height: 12px;
+  background: inherit;
+  border-left: inherit;
+  border-top: inherit;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+/* --- Piles de cartes classées --- */
+
+.classification-board__piles {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.3rem;
+  width: 100%;
+  max-width: 860px;
+  margin: 2rem auto 0;
+}
+
+.classification-board__pile-stack {
+  position: relative;
+  height: 56px;
+}
+
+.classification-board__pile-card {
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 40px;
+  height: 26px;
+  border-radius: 4px;
+  box-shadow: 0 2px 3px rgba(28, 42, 51, 0.18);
+}
+
+.classification-board__pile-card--story {
+  background: var(--story);
+}
+.classification-board__pile-card--rule {
+  background: var(--rule);
+}
+.classification-board__pile-card--example {
+  background: var(--example);
+}
+.classification-board__pile-card--question {
+  background: var(--question);
+}
