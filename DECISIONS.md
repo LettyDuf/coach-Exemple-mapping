@@ -201,3 +201,5 @@ Choix retenu après plusieurs itérations de mockup (voir coach-example-mapping-
 Alternative écartée : univers thématiques "Expédition" ou "Naturaliste" (nouvelle métaphore, nouvelles icônes). Écartée par Lætitia : elle voulait approfondir l'existant, pas le remplacer.
 
 Hors périmètre, toujours ouvert : le motif définitif du dos de carte (D14) reste à trancher ; le bandeau doré s'applique au motif actuel (treillis) sans le remplacer.
+
+Ajustement du 2026-07-04 (même jour) : le fond du dos de carte est passé du gris ardoise d'origine à un parchemin, puis retenu en bleu clair (`#d9e3ee`) avec le treillis en brun, sur validation de Lætitia.
