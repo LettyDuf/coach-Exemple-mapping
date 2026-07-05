@@ -70,6 +70,13 @@ describe("ClassificationBoard", () => {
     expect(within(choices).getByRole("button", { name: /question/i })).toHaveClass(
       "classification-board__choice--correct-reveal",
     );
+
+    // Badges décoratifs (D19) : redondants avec la bulle de feedback
+    // ci-dessus, jamais la seule source de l'information.
+    const questionButton = within(choices).getByRole("button", { name: /question/i });
+    expect(within(questionButton).getByText(/bonne réponse/i)).toBeInTheDocument();
+    const regleButton = within(choices).getByRole("button", { name: /règle/i });
+    expect(within(regleButton).getByText(/votre choix/i)).toBeInTheDocument();
   });
 
   it("un bouton dédié permet de passer un item sans répondre", () => {

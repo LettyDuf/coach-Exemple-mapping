@@ -186,3 +186,18 @@ Contexte : la première tentative d'animation de "tour" entre deux items (rotati
 Choix : le conteneur de la carte garde désormais une orientation fixe une fois révélé (plus aucune classe d'animation dessus). Seul le texte de l'énoncé, dans un `<span>` dédié, joue une sortie (aplatissement horizontal + fondu) puis, une fois le texte remplacé, une entrée symétrique. Aucune rotation 3D réelle sur cet élément : il est déjà dans un parent avec perspective et rotateY, une seconde rotation imbriquée aurait un rendu peu prévisible selon les navigateurs.
 
 Alternative écartée : garder une rotation 3D mais sur le texte seul plutôt que sur la carte entière. Écartée pour la même raison de prévisibilité inter-navigateurs ; l'aplatissement horizontal (scaleX) donne une sensation de "tour" comparable sans ce risque.
+
+## D19 — Matérialité "reliure ornée", icônes affinées, badges d'état (2026-07-04)
+
+Contexte : Lætitia a demandé d'aller plus loin dans un graphisme "jeu de plateau", en s'inspirant d'un autre outil de la même autrice (Coach Risques) sans en répliquer l'identité (doctrine du projet, jamais de parité par calque). Deux univers thématiques nouveaux (Expédition, Naturaliste) ont été proposés par un panel d'experts puis écartés par Lætitia : elle voulait approfondir la direction parchemin/or déjà validée, pas repartir sur une nouvelle métaphore.
+
+Choix retenu après plusieurs itérations de mockup (voir coach-example-mapping-mockup-approfondi.html) :
+- Cartes couleur parchemin (`--card: #fbf9f4`), cerclées d'un filet doré (`--gold: #b8925a`), avec de petits repères de coin en losange, purement décoratifs.
+- Typographie Fraunces (serif) pour les titres, labels de catégorie et l'énoncé lui-même ; remplace "Source Serif 4" qui était chargé mais jamais utilisé.
+- Icônes des 4 catégories affinées (livre à ruban, balance à fleuron, loupe à joyau, parchemin à coins enroulés) : même pictogramme de base, un peu plus de détail gravé.
+- Badges "Votre choix"/"Bonne réponse" sous la carte concernée (jamais au-dessus : chevauchait le bandeau de couleur et l'icône lors des essais). Purement décoratifs (aria-hidden) : l'information qu'ils portent est déjà restituée en toutes lettres dans la bulle de feedback accessible (D17), jamais dupliquée pour un lecteur d'écran.
+- Le repère textuel "(bonne réponse)" auparavant intégré à l'étiquette de la carte est retiré, remplacé par le badge ; la bulle de feedback (source accessible) est inchangée.
+
+Alternative écartée : univers thématiques "Expédition" ou "Naturaliste" (nouvelle métaphore, nouvelles icônes). Écartée par Lætitia : elle voulait approfondir l'existant, pas le remplacer.
+
+Hors périmètre, toujours ouvert : le motif définitif du dos de carte (D14) reste à trancher ; le bandeau doré s'applique au motif actuel (treillis) sans le remplacer.

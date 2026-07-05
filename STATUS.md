@@ -22,8 +22,8 @@
     (`coach-example-mapping.html` à la racine, ~212 Ko).
 
 ## En cours
-- Rien en chantier : la refonte fun est intégrée et vérifiée en production
-  (voir plus bas).
+- Rien en chantier : la matérialité "reliure ornée" (D19) est intégrée et
+  vérifiée en production (voir plus bas).
 
 ## Prochain pas
 1. Décider avec Lætitia du motif définitif du dos de carte (D14 laisse ce
@@ -129,3 +129,23 @@ de catégorie sont désormais externalisés dans
 D7), plus codés en dur dans l'UI. En mode Autonome, la définition reste
 toujours restituée à un lecteur d'écran (seule l'opacité visuelle
 change). 24 tests verts, `tsc`/`ESLint` propres, build régénéré.
+
+## Direction graphique "reliure ornée" (2026-07-04, D19)
+Suite à une demande de Lætitia d'aller plus loin dans un graphisme "jeu de
+plateau" (en s'inspirant de Coach Risques sans en répliquer l'identité,
+doctrine du projet), plusieurs mockups comparés : deux univers thématiques
+nouveaux (Expédition, Naturaliste) proposés par un panel d'experts puis
+écartés par Lætitia, qui voulait approfondir la direction parchemin/or déjà
+retenue plutôt que repartir sur une nouvelle métaphore. Direction finale
+validée et intégrée en production : cartes parchemin cerclées d'un filet
+doré, typographie Fraunces (remplace "Source Serif 4", chargé mais jamais
+utilisé), 4 icônes affinées (icons.tsx), badges "Votre choix"/"Bonne
+réponse" sous la carte concernée (décoratifs, aria-hidden, redondants avec
+la bulle de feedback accessible). 28 tests verts (2 nouvelles assertions sur
+les badges), `tsc`/`ESLint` propres, build régénéré
+(`coach-example-mapping.html`, `docs/index.html`).
+
+Fichiers mockup de comparaison conservés à la racine (traçabilité des
+itérations) : coach-example-mapping-mockup-ludique.html,
+-univers.html, -approfondi.html, -couleur-lignes.html. Aucun n'est branché
+au domaine réel, pas de tests : purs prototypes visuels.

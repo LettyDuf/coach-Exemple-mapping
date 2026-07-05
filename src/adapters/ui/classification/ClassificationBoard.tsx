@@ -37,6 +37,13 @@
  * toutes lettres dans la bulle de feedback : `item.expected` est une
  * donnée de contenu déjà exposée par le domaine, pas une déduction
  * ajoutée côté UI.
+ *
+ * Matérialité "reliure ornée" (D19, 2026-07-04) : direction validée par
+ * Lætitia après plusieurs mockups comparés (voir
+ * coach-example-mapping-mockup-approfondi.html). Les badges "Votre
+ * choix"/"Bonne réponse" sont décoratifs (aria-hidden) : l'information
+ * qu'ils portent est déjà restituée en toutes lettres dans la bulle de
+ * feedback accessible, jamais dupliquée pour un lecteur d'écran.
  */
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
@@ -256,6 +263,12 @@ export default function ClassificationBoard() {
             <span className="classification-board__medallion" aria-hidden="true" />
           </span>
           <span className="classification-board__face classification-board__face--front">
+            <span className="classification-board__corner classification-board__corner--tl" aria-hidden="true" />
+            <span className="classification-board__corner classification-board__corner--tr" aria-hidden="true" />
+            <span className="classification-board__stage-kicker" aria-hidden="true">
+              <span>Énoncé</span>
+              <span>&#10022;</span>
+            </span>
             <span
               className={[
                 "classification-board__statement",
@@ -265,6 +278,11 @@ export default function ClassificationBoard() {
                 .join(" ")}
             >
               {displayedStatement}
+            </span>
+            <span className="classification-board__stage-divider" aria-hidden="true">
+              <span className="classification-board__stage-divider-line" />
+              <span>&#10022;</span>
+              <span className="classification-board__stage-divider-line" />
             </span>
           </span>
         </button>
@@ -312,16 +330,25 @@ export default function ClassificationBoard() {
               onClick={() => submit(color)}
               disabled={!revealed || Boolean(result)}
             >
+              <span className="classification-board__corner classification-board__corner--tl" aria-hidden="true" />
+              <span className="classification-board__corner classification-board__corner--tr" aria-hidden="true" />
+              {isChosen && result ? (
+                <span className="classification-board__badge classification-board__badge--chosen" aria-hidden="true">
+                  <span className="classification-board__badge-glyph">&#9733;</span>
+                  Votre choix
+                </span>
+              ) : null}
+              {isCorrectReveal ? (
+                <span className="classification-board__badge classification-board__badge--correct" aria-hidden="true">
+                  <span className="classification-board__badge-glyph">&#10003;</span>
+                  Bonne réponse
+                </span>
+              ) : null}
               <span className="classification-board__choice-head">
                 <Icon />
               </span>
               <span className="classification-board__choice-body">
-                <span className="classification-board__choice-label">
-                  {reminder.label}
-                  {isCorrectReveal ? (
-                    <span className="classification-board__choice-correct-tag"> (bonne réponse)</span>
-                  ) : null}
-                </span>
+                <span className="classification-board__choice-label">{reminder.label}</span>
                 <span className="classification-board__choice-def">{reminder.definition}</span>
               </span>
             </button>
